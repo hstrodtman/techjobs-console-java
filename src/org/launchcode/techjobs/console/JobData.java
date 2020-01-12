@@ -70,17 +70,38 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
+        String lowerCaseValue = value.toLowerCase();
+
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
+            String aValue = row.get(column).toLowerCase();
 
-            if (aValue.contains(value)) {
+            if (aValue.contains(lowerCaseValue)) {
                 jobs.add(row);
             }
         }
 
+        return jobs;
+    }
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        //load data, if not already loaded
+        loadData();
+
+        String lowerCaseValue = value.toLowerCase();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+            for(HashMap.Entry<String, String> item : row.entrySet()){
+                String aValue= item.getValue().toLowerCase();
+                if (aValue.contains(lowerCaseValue) && !jobs.contains(row)) {
+                    jobs.add(row);
+                }
+            }
+        }
         return jobs;
     }
 
